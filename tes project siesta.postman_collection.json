@@ -1,0 +1,80 @@
+{
+	"info": {
+		"_postman_id": "2ff44a78-e6c6-4f57-8ec6-53ca147c74d1",
+		"name": "tes project siesta",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "10004593"
+	},
+	"item": [
+		{
+			"name": "Create Loan",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"id_user\" : 1,\r\n    \"amount\" : 6000000,\r\n    \"tenor\" : 3,\r\n    \"preview\" : false\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{host}}loan",
+					"host": [
+						"{{host}}loan"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get Loan",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{host}}loan?id_user=1",
+					"host": [
+						"{{host}}loan"
+					],
+					"query": [
+						{
+							"key": "id_user",
+							"value": "1"
+						}
+					]
+				}
+			},
+			"response": []
+		}
+	],
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		}
+	],
+	"variable": [
+		{
+			"key": "host",
+			"value": "http://localhost:8080/",
+			"type": "string"
+		}
+	]
+}
