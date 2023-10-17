@@ -59,6 +59,9 @@ func CalculateLoanMonth(idUser string) (result loan.LoanTotal, err error) {
 
 	DB := configs.DB
 	var getLoan loan.GetLoan
+	var loanMonth [][]loan.LoanMonth
+	var loanMonth2 []loan.LoanMonth
+	// var i int
 	// var arGetLoan []loan.GetLoan
 
 	query := `select id_user, amount, tenor, month(created_at) from loans where id_user = ?`
@@ -73,19 +76,49 @@ func CalculateLoanMonth(idUser string) (result loan.LoanTotal, err error) {
 
 	for rows.Next() {
 
+		loanMonth2 = nil
+
 		err = rows.Scan(&getLoan.IdUser, &getLoan.Amount, &getLoan.Tenor, &getLoan.StartMonth)
 		if err != nil {
 			return
 		}
 
-		loan := CalculateLoan(loan.Loan{
+		loanSingle := CalculateLoan(loan.Loan{
 			Amount: getLoan.Amount,
 			Tenor:  getLoan.Tenor,
 		}, 10)
 
-		log.Printf("%+v\n",loan)
+		// log.Printf("%+v\n",loan)
 
+		for l := 0; l < getLoan.Tenor; l++ {
+
+			loanMonth2 = append(loanMonth2, loan.LoanMonth{
+				IdUser:        getLoan.IdUser,
+				Month:         getLoan.StartMonth + l,
+				Fee:           loanSingle.Fee,
+				FeeStamp:      loanSingle.FeeStamp,
+				Interest:      loanSingle.InterestPerMonth,
+				PrincipalPaid: loanSingle.PrincipalPerMonth,
+				Bill:          loanSingle.Fee + loanSingle.FeeStamp + loanSingle.InterestPerMonth + loanSingle.PrincipalPerMonth,
+			})
+		}
+
+		loanMonth = append(loanMonth, loanMonth2)
+
+		// i++
 	}
+
+	// for _, value := range loanMonth {
+
+	// 	for _, value2 := range value {
+
+	// 		idx = slices.IndexFunc(result.Loan, func(c loanMonth3) bool { return c.Id == value2.Month })
+
+	// 	}
+
+	// }
+
+	log.Println(loanMonth)
 
 	return
 }
